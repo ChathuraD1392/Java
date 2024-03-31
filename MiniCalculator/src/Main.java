@@ -84,6 +84,7 @@ public class Main extends JFrame {
         btnOne.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 text.setText(text.getText() + btnOne.getText());
             }
         });
