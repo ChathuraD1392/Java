@@ -22,6 +22,7 @@ public class Main extends JFrame {
         getContentPane().setBackground(Color.black);
         setIconImage(logo.getImage());
         setUndecorated(false);
+        setResizable(false);
 
         text = new JLabel();
         text.setBounds(25,25,185,50);
