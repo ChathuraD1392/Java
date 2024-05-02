@@ -104,6 +104,10 @@ public class Home extends javax.swing.JFrame {
         deleteBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
         exitBtn = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        searchField = new javax.swing.JTextField();
+        searchBtn = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -331,6 +335,34 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Segoe UI Semibold", 1, 13)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Search Student");
+
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
+
+        searchBtn.setBackground(new java.awt.Color(51, 51, 51));
+        searchBtn.setForeground(new java.awt.Color(255, 255, 255));
+        searchBtn.setText("Search");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
+
+        refreshBtn.setBackground(new java.awt.Color(0, 51, 51));
+        refreshBtn.setForeground(new java.awt.Color(255, 255, 255));
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -345,6 +377,16 @@ public class Home extends javax.swing.JFrame {
                         .addGap(265, 265, 265)
                         .addComponent(exitBtn)))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(jLabel10)
+                .addGap(18, 18, 18)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(searchBtn)
+                .addGap(18, 18, 18)
+                .addComponent(refreshBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(299, 299, 299)
@@ -355,7 +397,13 @@ public class Home extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBtn)
+                    .addComponent(refreshBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteBtn)
@@ -394,7 +442,7 @@ public class Home extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void saveDetails(String query, String message){
+    public void saveDetails(String query, String message) {
         String name = stdName.getText();
         int regno = Integer.parseInt(stdRegno.getText());
         int grade = Integer.parseInt(stdGrade.getText());
@@ -415,7 +463,7 @@ public class Home extends javax.swing.JFrame {
             statement.setString(5, address);
             statement.setString(6, nok);
             statement.executeUpdate();
-            JOptionPane.showMessageDialog(this, message);
+            JOptionPane.showMessageDialog(null, message , "Message", JOptionPane.INFORMATION_MESSAGE);
             updateTable();
             reset();
 
@@ -429,11 +477,11 @@ public class Home extends javax.swing.JFrame {
 
         String query = "INSERT INTO register(name,grade,tel,dob,address,nok,regno) VALUES(?,?,?,?,?,?,?)";
         String message = "Student registered successfully";
-        saveDetails(query,message);
+        saveDetails(query, message);
 
     }//GEN-LAST:event_registerActionPerformed
 
-    public void reset(){
+    public void reset() {
         stdName.setText("");
         stdRegno.setText("");
         stdGrade.setText("");
@@ -463,9 +511,9 @@ public class Home extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost/students", "root", "");
             statement = connection.prepareStatement("DELETE FROM register WHERE regno=?");
-            statement.setInt(1,regNo);
+            statement.setInt(1, regNo);
             statement.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Student Details deleted successfully");
+            JOptionPane.showMessageDialog(null, "Student Details deleted successfully","Message", JOptionPane.INFORMATION_MESSAGE);
             updateTable();
             reset();
         } catch (ClassNotFoundException ex) {
@@ -473,13 +521,13 @@ public class Home extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void regTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_regTableMouseClicked
         DefaultTableModel defaultTableModel = (DefaultTableModel) regTable.getModel();
         int selectedIndex = regTable.getSelectedRow();
-        
+
         stdRegno.setText(defaultTableModel.getValueAt(selectedIndex, 0).toString());
         stdName.setText(defaultTableModel.getValueAt(selectedIndex, 1).toString());
         stdGrade.setText(defaultTableModel.getValueAt(selectedIndex, 2).toString());
@@ -494,6 +542,55 @@ public class Home extends javax.swing.JFrame {
         String message = "Details Updated successfully";
         saveDetails(query, message);
     }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+
+        String keyword = searchField.getText();
+        DefaultTableModel tableModel = (DefaultTableModel) regTable.getModel();
+        tableModel.setRowCount(0);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/students", "root", "");
+            statement = connection.prepareStatement("SELECT * FROM register WHERE name LIKE '%" + keyword + "%'");
+            ResultSet resultSet = statement.executeQuery();
+
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            if (!resultSet.next()) {
+                JOptionPane.showMessageDialog(null, "No results found like " + keyword, "Error",JOptionPane.ERROR_MESSAGE);
+                updateTable();
+            } else {
+                do {
+                    Vector vector = new Vector();
+                    for (int i = 0; i < columnCount; i++) {
+                        vector.add(resultSet.getString("regno"));
+                        vector.add(resultSet.getString("name"));
+                        vector.add(resultSet.getString("grade"));
+                        vector.add(resultSet.getString("tel"));
+                        vector.add(resultSet.getString("dob"));
+                        vector.add(resultSet.getString("address"));
+                        vector.add(resultSet.getString("nok"));
+                    }
+                    tableModel.addRow(vector);
+                }while (resultSet.next());
+            }
+            searchField.setText("");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        updateTable();
+    }//GEN-LAST:event_refreshBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -534,6 +631,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton exitBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -546,9 +644,12 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton refreshBtn;
     private javax.swing.JTable regTable;
     private javax.swing.JButton register;
     private javax.swing.JButton reset;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchField;
     private javax.swing.JTextField stdAddress;
     private javax.swing.JTextField stdDOB;
     private javax.swing.JTextField stdGrade;
